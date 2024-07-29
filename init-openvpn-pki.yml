@@ -1,0 +1,10 @@
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Initialize OpenVPN PKI
+    community.docker.docker_container_exec:
+      container: kylemanna/openvpn
+      command: /bin/bash -c "ls -lah"
+      chdir: /root
+

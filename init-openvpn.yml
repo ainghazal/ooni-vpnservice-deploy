@@ -1,0 +1,47 @@
+- hosts: all
+  vars:
+    - username: vpnadmin
+      home: /home/vpnadmin
+      endpoint: openvpn-server1.ooni.io
+
+  become: true
+  tasks:
+    - name: create openvpn dir
+      ansible.builtin.file:
+        path: "{{home}}/files/openvpn"
+        state: directory
+
+    - name: Copy "openvpn_*.conf" files 
+      ansible.builtin.copy:
+        src: files/openvpn/openvpn_{{item}}.conf
+        dest: "{{home}}/files/openvpn/openvpn_{{item}}.conf"
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: '0644'
+        backup: yes
+      loop:
+        - udp
+        - tcp
+
+    - name: Copy "init-pki.sh" 
+      ansible.builtin.copy:
+        src: files/openvpn/init-pki.sh
+        dest: "{{home}}/files/openvpn/init-pki.sh"
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: '0744'
+
+    - name: Generate pki input
+      ansible.builtin.shell: echo "{{endpoint}}" > "{{home}}/files/openvpn/input"
+
+    - name: Copy "backup-pki.sh" 
+      ansible.builtin.copy:
+        src: files/openvpn/backup-pki.sh
+        dest: "{{home}}/files/openvpn/backup-pki.sh"
+        owner: "{{username}}"
+        group: "{{username}}"
+        mode: '0744'
+
+    - name: Create empty openvpn docker volume
+      docker_volume:
+        name: ovpn_data
