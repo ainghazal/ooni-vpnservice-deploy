@@ -1,0 +1,24 @@
+- hosts: all
+  become: true
+  tasks:
+
+  - name: Disallow SSH password authentication
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "^PasswordAuthentication"
+      line: "PasswordAuthentication no"
+      state: present
+      validate: sshd -t -f %s
+
+  - name: Disallow SSH X11 fwd
+    lineinfile:
+      path: /etc/ssh/sshd_config
+      regexp: "^X11Forwarding"
+      line: "X11Forwarding no"
+      state: present
+      validate: sshd -t -f %s
+
+  - name: Restart sshd
+    service:
+      name: ssh
+      state: restarted
