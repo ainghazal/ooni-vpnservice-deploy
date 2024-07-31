@@ -31,9 +31,6 @@
         group: "{{username}}"
         mode: '0744'
 
-    - name: Generate pki input
-      ansible.builtin.shell: echo "{{endpoint}}" > "{{home}}/files/openvpn/input"
-
     - name: Copy "backup-pki.sh" 
       ansible.builtin.copy:
         src: files/openvpn/backup-pki.sh

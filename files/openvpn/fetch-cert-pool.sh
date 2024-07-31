@@ -5,7 +5,10 @@
 # so I'm adding it here.
 OVPN_DATA=ovpn_data
 CERTDIR=~/backups/certs
-NUMCERTS=100
+
+# TODO: change to 100
+NUMCERTS=5
+IMAGE=openvpn-docker
 
 mkdir -p $CERTDIR
 for i in $(seq 1 $NUMCERTS)
@@ -14,6 +17,6 @@ do
         echo "fetching $CERT"
         docker run -v $OVPN_DATA:/etc/openvpn \
         --rm \
-        kylemanna/openvpn \
+        $IMAGE \
         ovpn_getclient $CERT > $CERTDIR/$CERT.ovpn
 done

@@ -6,13 +6,13 @@
 #
 OVPN_DATA=ovpn_data
 ENDPOINT=openvpn-server1.ooni.io
-IMAGE=kylemanna/openvpn
+IMAGE=openvpn-docker
 ALPINE=alpine:latest
 BACKUP=openvpn-pki.tar.gz
 CERTS=client-certs.tar.gz
 
 # launch a container with the volume attached
-docker run --name=ovpn-cp -d -v $OVPN_DATA:/etc/openvpn alpine:latest
+docker run --rm --name=ovpn-cp -d -v $OVPN_DATA:/etc/openvpn $ALPINE
 mkdir -p ~/backups
 
 # backup the whole openvpn folder, including the pki dir

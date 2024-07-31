@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  vars:
+    home: /home/vpnadmin
+    repo: openvpn-docker
+  tasks:
+
+  - name: Ensure git is installed
+    apt:
+      name: git
+      state: present
+
+  - name: Clone or update the Git repository
+    git:
+      repo: https://github.com/ainghazal/docker-openvpn-test
+      dest: "{{home}}/{{repo}}"
+      clone: yes
+      update: yes
+
+  - name: Build the image
+    shell: 
+      cmd: "docker build -t openvpn-docker ."
+      chdir: "{{home}}/{{repo}}"

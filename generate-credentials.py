@@ -31,7 +31,9 @@ def extract_lines_between_tags(filename, tag):
 
 if __name__ == "__main__":
 
-    fn = sys.argv[1]
+    number = sys.argv[1]
+    # TODO: make sure you have uncompressed the tar.gz!!
+    fn = f"state/openvpn-server1.ooni.io/root/backups/certs/client-cert-{number}.ovpn"
 
     creds = {
         "ca": extract_lines_between_tags(fn, 'ca'),
